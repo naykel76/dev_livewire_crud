@@ -1,0 +1,21 @@
+{
+  "main": {
+    "links": [
+      {
+        "title":"Admin",
+        "route_name": "admin",
+        "icon": "dashboard",
+        "exclude_route": true
+      }
+    ]
+  },
+  "dev": {
+    "links": [
+      {
+        "title":"Dev",
+        "route_name": "dev",
+        "exclude_route": true
+      }
+    ]
+  }
+}

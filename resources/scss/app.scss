@@ -1,0 +1,6 @@
+// @use "node_modules/nk_jtb/scss/base/vars_colors" as *; // with ( $primary: #6233cd,);
+// @use "node_modules/nk_jtb/scss/base/vars_base" as *; // with ($base-font-size: 0.875rem);
+// @use "node_modules/nk_jtb/scss/base/vars_components" as *; // with ($navbar-bg: $primary,);
+// @use "node_modules/nk_jtb/scss/mixins/media" as *;
+
+@use "node_modules/nk_jtb/scss/jtb";
