@@ -10,7 +10,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "naykel/gotime": "dev-master"
+        "naykel/gotime": "dev-master",
+        "naykel/iconit": "dev-master"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -63,6 +64,13 @@
         "naykel/gotime": {
             "type": "path",
             "url": "C:\\Users\\nayke\\Desktop\\htdocs\\nk_packages\\gotime",
+            "options": {
+                "symlink": true
+            }
+        },
+        "naykel/iconit": {
+            "type": "path",
+            "url": "C:\\Users\\nayke\\Desktop\\htdocs\\nk_packages\\iconit",
             "options": {
                 "symlink": true
             }

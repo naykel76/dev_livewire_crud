@@ -73,3 +73,33 @@ The toolbar component comes from `naykel/gotime` package. For reference it look 
 
 </div>
 ```
+
+## Round 4 - CRUD Functions and Modal
+
+- [x] Add 'status' options to project model
+- [x] add crud functions
+- [x] Create edit/add form
+- [x] Move form to Gotime modal
+- [x] Add new button
+- [x] Save button
+- [x] Cancel function
+
+```php
+/**
+* Create a instance of the model to avoid errors and set
+* default values, but do not persist it to the database.
+*/
+public function makeBlankTransaction()
+{
+    return Project::make(['key' => 'value']);
+}
+```
+
+## Round 5 - Refactor
+
+- [ ] Trix editor
+- [ ] Confirm on delete
+- [ ] Notify on delete
+- [ ] Notify on save
+- [ ] Notify on update
+- [ ] Add edit, preview, and delete icons

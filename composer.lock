@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "29077a49a4517e073176d154a1796b48",
+    "content-hash": "787fc3e349d5b922af2368ab467fa033",
     "packages": [
         {
             "name": "brick/math",
@@ -1873,6 +1873,52 @@
             "description": "Starter package for NayKel Laravel applications",
             "homepage": "https://naykel.com.au",
             "keywords": [
+                "Laravel",
+                "Naykel"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": false
+            }
+        },
+        {
+            "name": "naykel/iconit",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "C:/Users/nayke/Desktop/htdocs/nk_packages/iconit",
+                "reference": "6fb4c0adb729127c63f424884a0bdf5cdead7767"
+            },
+            "require": {
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Naykel\\Iconit\\IconitServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Naykel\\Iconit\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nathan Watts",
+                    "email": "nathan@naykel.com.au",
+                    "homepage": "https://naykel.com.au"
+                }
+            ],
+            "description": "Icon components for NAYKEL Laravel applications",
+            "homepage": "https://naykel.com.au",
+            "keywords": [
+                "Icons",
                 "Laravel",
                 "Naykel"
             ],
@@ -8080,7 +8126,8 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "naykel/gotime": 20
+        "naykel/gotime": 20,
+        "naykel/iconit": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
