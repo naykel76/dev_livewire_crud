@@ -1,16 +1,14 @@
 <div>
 
-    <div class="flex">
-        <x-input wire:model="search" placeholder="Search projects..." />
-    </div>
+    <x-gt-search-sort-toolbar :searchField="$searchField" :searchOptions="$searchOptions" :paginateOptions="$paginateOptions"/>
 
     <table class="fullwidth">
 
         <thead>
 
-            <x-gt-table.th sortable wire:click="sortBy('title')" :direction="$sortBy === 'title' ? $sortDirection : null">Title</x-gt-table.th>
-            <x-gt-table.th sortable wire:click="sortBy('status')" :direction="$sortBy === 'status' ? $sortDirection : null">Status</x-gt-table.th>
-            <x-gt-table.th sortable wire:click="sortBy('sort_order')" :direction="$sortBy === 'sort_order' ? $sortDirection : null">Order</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('title')" :direction="$sortField === 'title' ? $sortDirection : null">Title</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('status')" :direction="$sortField === 'status' ? $sortDirection : null">Status</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('sort_order')" :direction="$sortField === 'sort_order' ? $sortDirection : null">Order</x-gt-table.th>
             <x-gt-table.th>Image</x-gt-table.th>
 
         </thead>

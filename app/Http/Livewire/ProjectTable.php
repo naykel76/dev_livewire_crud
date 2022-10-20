@@ -3,29 +3,21 @@
 namespace App\Http\Livewire;
 
 use App\Models\Project;
+use App\Http\Livewire\DataTable\WithSorting;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class ProjectTable extends Component
 {
 
-    use WithPagination;
+    use WithPagination, WithSorting;
 
     public string $search = '';
-    public string $searchBy = 'title'; // default search field
+    public string $searchField = 'title'; // default search field
+    public $searchOptions = ['title', 'status']; // available search fields
 
-    public $sortBy = "title";
-    public $sortDirection = "asc";
-
-    public function sortBy($field)
-    {
-        if ($this->sortBy === $field) {
-            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-        $this->sortBy = $field;
-    }
+    public $perPage = 10;
+    public $paginateOptions = [10, 25, 50, 100];
 
     /**
      *  Return to first page after search updated
@@ -38,10 +30,13 @@ class ProjectTable extends Component
     public function render()
     {
         sleep(1);
+
+        $query = Project::search($this->searchField, $this->search)
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
+
         return view('livewire.project-table')->with([
-            'projects' => Project::search($this->searchBy, $this->search)
-                ->orderBy($this->sortBy, $this->sortDirection)
-                ->paginate(10),
+            'projects' => $query,
         ]);
     }
 }

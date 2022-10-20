@@ -15,7 +15,7 @@ This sample project
 ## Round 2 - Search and Sort
 
 - [x] Add search macro to `AppServiceProvider`
-- [x] Add `sortBy()` method to `Project::class`
+- [x] Add `sortField()` method to `Project::class`
 - [x] Fix incorrect pagination component
 - [x] Add search and sort properties
 - [x] Update render method to include search and sort queries
@@ -35,9 +35,41 @@ public function boot() {
 }
 ```
 
-## Round 3 - Refactor for Reusability
+## Round 3 - Refactor for Re-Usability and Toolbar
 
- - [ ] WithSorting trait
- - [ ] WithSearch trait
+- [x] Add WithSorting trait
+- [x] Add dropdown to select `$searchField`
+- [x] Add dropdown to select `$perPage`
+- [x] Select search field
+- [x] Add Gotime Search/Sort toolbar component
 
 
+There are some issues surrounding the `$sortField` attribute. For now the `id` field has been set as the default search field to prevent the column not found error.
+
+The toolbar component comes from `naykel/gotime` package. For reference it look something like this:
+
+```html
+<div class="flex space-x-2">
+
+    <x-gt-control.input wire:model="search" for="search" placeholder="Search {{ $searchField }}..." />
+
+    <div class="flex va-c">
+        <label class="mr-075">Search By</label>
+        <x-gt-control.select wire:model="searchField" for="searchField">
+            @foreach($searchOptions as $option)
+                <option value="{{ $option }}">{{ Str::title($option) }}</option>
+            @endforeach
+        </x-gt-control.select>
+    </div>
+
+    <div class="flex va-c">
+        <label class="mr-075">Items per page: </label>
+        <x-gt-control.select wire:model="perPage" for="perPage">
+            @foreach($paginateOptions as $option)
+                <option value="{{ $option }}">{{ $option }}</option>
+            @endforeach
+        </x-gt-control.select>
+    </div>
+
+</div>
+```
