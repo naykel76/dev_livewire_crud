@@ -1,36 +1,43 @@
 <div>
 
-    <table>
+    <div class="flex">
+        <x-input wire:model="search" placeholder="Search projects..." />
+    </div>
+
+    <table class="fullwidth">
 
         <thead>
 
-            <th>Id</th>
-            <th>Title</th>
-            <th class="tac">Status</th>
-            <th class="tac">Sort Order</th>
-            <th>Image</th>
+            <x-gt-table.th sortable wire:click="sortBy('title')" :direction="$sortBy === 'title' ? $sortDirection : null">Title</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortBy('status')" :direction="$sortBy === 'status' ? $sortDirection : null">Status</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortBy('sort_order')" :direction="$sortBy === 'sort_order' ? $sortDirection : null">Order</x-gt-table.th>
+            <x-gt-table.th>Image</x-gt-table.th>
 
         </thead>
 
-        @forelse($projects as $project)
+        <tbody>
 
-            <tr>
-                <td>{{ $project->id }}</td>
-                <td>{{ $project->title }}</td>
-                <td class="tac">{{ $project->status }}</td>
-                <td class="tac">{{ $project->sort_order }}</td>
-                <td>{{ $project->image_name }}</td>
-            </tr>
+            @forelse($projects as $project)
 
-        @empty
+                <tr wire:loading.class.delay="txt-muted">
+                    <td>{{ $project->title }}</td>
+                    <td>{{ $project->status }}</td>
+                    <td>{{ $project->sort_order }}</td>
+                    <td>{{ $project->image_name }}</td>
+                </tr>
 
-            <tr>
-                <td class="tac pxy" colspan="6">Nothing to display.</td>
-            </tr>
+            @empty
 
-        @endforelse
+                <tr>
+                    <td class="tac pxy txt-lg" colspan="6">No records found...</td>
+                </tr>
+
+            @endforelse
+
+        </tbody>
 
     </table>
 
-    {{ $projects->links('gotime::pagination.default') }}
+    {{ $projects->links('gotime::pagination.livewire') }}
+
 </div>

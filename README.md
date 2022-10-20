@@ -12,16 +12,32 @@ This sample project
 - [x] Update render method to return projects with pagination
 - [x] Update view to display basic data table and pagination
 
-## Round 2
+## Round 2 - Search and Sort
 
-- [ ] Sortable columns
-- [ ] Searchable columns
-- [ ] Create reusable table components
-- [ ] Create reusable Search/Sort toolbar component
+- [x] Add search macro to `AppServiceProvider`
+- [x] Add `sortBy()` method to `Project::class`
+- [x] Fix incorrect pagination component
+- [x] Add search and sort properties
+- [x] Update render method to include search and sort queries
+- [x] Update view to use Gotime <th> components with sortable columns
 
+Search macro must be included in the `boot()` method of the `AppServiceProvider`.
 
-## Round 3
+```php
+use Illuminate\Database\Eloquent\Builder;
 
+public function boot() {
 
+    Builder::macro('search', function ($field, $string) {
+        return $string ? $this->where($field, 'like', '%'.$string.'%') : $this;
+    });
+
+}
+```
+
+## Round 3 - Refactor for Reusability
+
+ - [ ] WithSorting trait
+ - [ ] WithSearch trait
 
 
