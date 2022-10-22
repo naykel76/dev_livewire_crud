@@ -1,28 +1,47 @@
 <div>
 
     <x-gt-modal wire:model="showModal" maxWidth="xl">
-        <div class="flex space-between va-c"><div class="bx-title">Edit/Add Project</div>
-        <x-gotime-icon wire:click="$toggle('showModal')" icon="close" class="close sm" /></div>
+        <div class="flex space-between va-c">
+            <div class="bx-title">Edit/Add Project</div>
+            <x-gotime-icon wire:click="$toggle('showModal')" icon="close" class="close sm" />
+        </div>
+
         <form wire:submit.prevent="save">
+
             <div class="grid cols-75:25">
+
                 <div class="bdr-r pr">
                     <div class="bx light">
                         <div class="flex gg">
                             <x-gt-input wire:model.defer="editing.id" for="editing.id" label="ID" rowClass="w-5" disabled />
                             <x-gt-input wire:model.defer="editing.title" for="editing.title" label="Title" rowClass="fg1" />
                         </div>
-                        <x-gt-textarea wire:model.defer="editing.description" for="editing.description" label="Description" />
+                        <x-gt-trix wire:model.lazy="editing.description" for="editing.description" label="Description" />
                     </div>
                 </div>
+
                 <div>
                     <x-gt-select wire:model.defer="editing.status" for="editing.status" label="Status" placeholder="Please Select...">
                         @foreach(\App\Models\Project::STATUS as $key => $value)
                             <option value="{{ $key }}">{{ $value }}</option>
                         @endforeach
                     </x-gt-select>
+
                     <x-gt-input wire:model.defer="editing.sort_order" for="editing.sort_order" label="Sort Order" />
-                    <x-gt-input wire:model.defer="editing.image_name" for="editing.image_name" label="Image Name" />
+
+                    <div class="bx">
+                        @if($mainImage)
+                            <img src="{{ $mainImage->temporaryUrl() }}" alt="{{ $editing->title ?? null }}">
+                        @else
+                            <img src="{{ $editing->mainImageUrl() }}" alt="{{ $editing->title ?? null }}">
+                        @endif
+                    </div>
+
+                    <div class="tac">
+                        <x-gt-control.file wire:model="mainImage" for="mainImage" buttonText="Select Image" />
+                    </div>
                 </div>
+
             </div>
         </form>
         <button wire:click="save()" class="btn primary">Save</button>
@@ -60,7 +79,7 @@
                     <td>{{ $project->image_name }}</td>
                     <td class="tar txt-sm">
                         <a wire:click="edit({{ $project->id }})">edit</a>
-                        <a wire:click="delete({{ $project->id }})" class="txt-red ml-05">delete</a>
+                        <a wire:click="delete({{ $project->id }})" onclick="confirm('Are you sure?')" class="txt-red ml-05">delete</a>
                     </td>
                 </tr>
 

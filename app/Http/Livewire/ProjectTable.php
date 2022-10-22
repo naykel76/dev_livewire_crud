@@ -3,41 +3,48 @@
 namespace App\Http\Livewire;
 
 use App\Models\Project;
-use App\Http\Livewire\DataTable\WithSorting;
+use App\Http\Livewire\Traits\WithSorting;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectTable extends Component
 {
-
-    use WithPagination, WithSorting;
+    use WithPagination, WithSorting, WithFileUploads;
 
     public string $search = '';
     public string $searchField = 'title'; // default search field
-    public $searchOptions = ['title', 'status']; // available search fields
-
-    public $perPage = 10;
-    public $paginateOptions = [10, 25, 50, 100];
-
+    public array $searchOptions = ['title', 'status']; // available search fields
+    public int $perPage = 10;
+    public array $paginateOptions = [10, 25, 50, 100];
     public Project $editing;
-    public $showModal;
+    public bool $showModal;
+    public $mainImage;
 
     public function rules()
     {
         return [
+            'editing.id' => 'sometimes', // require for data binding
             'editing.title' => 'required|max:128',
             'editing.status' => 'sometimes|in:' . collect(Project::STATUS)->keys()->implode(','),
             'editing.sort_order' => 'nullable|integer',
-            'editing.image_name' => 'sometimes',
             'editing.description' => 'sometimes',
-            'editing.id' => 'sometimes' // this is solely for data binding
         ];
     }
-
 
     public function mount()
     {
         $this->editing = $this->makeBlankTransaction();
+    }
+
+    /**
+     * Real time validation
+     */
+    public function updatedMainImage()
+    {
+        $this->validate(['mainImage' => 'nullable|image|max:1000']);
     }
 
     /**
@@ -67,8 +74,11 @@ class ProjectTable extends Component
     public function save(): void
     {
         $this->validate();
-        $this->editing->save();
+        $this->editing->forceFill([])->save();
+        $this->mainImage ? $this->handleUpload($this->mainImage) : null;
         $this->showModal = false;
+
+        $this->dispatchBrowserEvent('notify', 'Profile saved!');
     }
 
     public function delete($id): void
@@ -85,6 +95,24 @@ class ProjectTable extends Component
         // this is a hacky way to reset the form!
         $this->editing = $this->makeBlankTransaction();
         $this->showModal = false;
+    }
+
+    /**
+     * compare the database field to the uploaded file and perform
+     * necessary file actions
+     */
+    public function handleUpload(UploadedFile $file)
+    {
+        $dbField = $this->editing->image_name;
+
+        tap($dbField, function ($previous) use ($file) {
+
+            $this->editing->forceFill([
+                'image_name' => $file->store('/', 'projects')
+            ])->save();
+
+            $previous ? Storage::disk('projects')->delete($previous) : null;
+        });
     }
 
     /**

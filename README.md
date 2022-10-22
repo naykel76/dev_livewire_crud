@@ -95,11 +95,34 @@ public function makeBlankTransaction()
 }
 ```
 
-## Round 5 - Refactor
+## Round 5 - Trix Editor and Upload Image
 
-- [ ] Trix editor
-- [ ] Confirm on delete
-- [ ] Notify on delete
-- [ ] Notify on save
-- [ ] Notify on update
-- [ ] Add edit, preview, and delete icons
+- [x] Trix editor (Gotime component)
+- [x] Add file upload for main image
+- [x] Create storage disc and update model
+- [x] Handle file function to manage storage and deleting
+- [x] Notify on save and update (emits to gotime component)
+- [x] Confirm on delete
+
+For realtime upload validation move the validation logic from the `rules` array and use the Livewire `updated` hook.
+
+```php
+public function updatedMainImage() {
+    $this->validate(['mainImage' => 'nullable|image|max:1000']);
+}
+```
+
+Emitted message us the notification component from `naykel/gotime` package. For reference it look something like this:
+
+```html
+<div x-data="{ show: false, message: '' }" x-show="show"
+    x-on:notify.window="show = true; message = $event.detail; setTimeout(() => { show = false }, 3000)">
+
+    <div class="fixed pos-b pos-r mxy flex va-c space-between bx minw300">
+        <x-gotime::icon icon="tick-round" class="fs0 txt-green" />
+        <div x-text="message" class="mx"></div>
+        <x-gotime::icon icon="close" class="fs0 close" @click="show = false" />
+    </div>
+
+</div>
+```
