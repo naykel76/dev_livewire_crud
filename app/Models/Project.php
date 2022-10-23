@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Naykel\Gotime\Casts\CurrencyCast;
+use Naykel\Gotime\Casts\DateCast;
 
 class Project extends Model
 {
@@ -14,8 +16,12 @@ class Project extends Model
 
     const STATUS = [
         'published' => 'Published',
-        'un-published' => 'Un-Published',
         'draft' => 'Draft'
+    ];
+
+    protected $casts = [
+        'project_value' => CurrencyCast::class,
+        // 'published_at' => DateCast::class
     ];
 
     /**

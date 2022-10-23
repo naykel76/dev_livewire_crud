@@ -126,3 +126,12 @@ Emitted message us the notification component from `naykel/gotime` package. For 
 
 </div>
 ```
+
+## Round 6 - Refactor CRUD Functions
+
+- [x] WithCrudTrait
+- [x] Change WithSorting trait to WithDataTable and include search logic
+- [x] Add additional fields with date and currency
+- [x] Update factory
+- [x] Add currency casting
+

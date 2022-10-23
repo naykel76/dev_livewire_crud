@@ -2,8 +2,9 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Livewire\Traits\WithCrud;
 use App\Models\Project;
-use App\Http\Livewire\Traits\WithSorting;
+use App\Http\Livewire\Traits\WithDataTable;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
@@ -12,31 +13,44 @@ use Illuminate\Support\Facades\Storage;
 
 class ProjectTable extends Component
 {
-    use WithPagination, WithSorting, WithFileUploads;
+    use WithPagination, WithDataTable, WithFileUploads, WithCrud;
 
-    public string $search = '';
     public string $searchField = 'title'; // default search field
     public array $searchOptions = ['title', 'status']; // available search fields
-    public int $perPage = 10;
-    public array $paginateOptions = [10, 25, 50, 100];
-    public Project $editing;
+
     public bool $showModal;
+
     public $mainImage;
+
+    /**
+     * Primary resource model class
+     * @var string
+     */
+    private static $model = Project::class;
+
+    /**
+     * Current model for editing
+     * @var Project
+     */
+    public Project $editing;
+
+    /**
+     * Default values for blank model
+     * @var string[]
+     */
+    protected $initialData = ['status' => 'draft'];
+
 
     public function rules()
     {
         return [
-            'editing.id' => 'sometimes', // require for data binding
+            'editing.id' => 'sometimes', // required for data binding
             'editing.title' => 'required|max:128',
             'editing.status' => 'sometimes|in:' . collect(Project::STATUS)->keys()->implode(','),
             'editing.sort_order' => 'nullable|integer',
+            'editing.project_value' => 'nullable|numeric',
             'editing.description' => 'sometimes',
         ];
-    }
-
-    public function mount()
-    {
-        $this->editing = $this->makeBlankTransaction();
     }
 
     /**
@@ -48,52 +62,12 @@ class ProjectTable extends Component
     }
 
     /**
-     * Create blank transaction and set defaults.
-     */
-    public function create(): void
-    {
-        /**
-         * if $editing has primary key, there is record from the
-         * database in the current form so don't reset fields.
-         */
-        if ($this->editing->getKey()) $this->editing = $this->makeBlankTransaction();
-
-        $this->showModal = true;
-    }
-
-    public function edit(Project $project)
-    {
-        // if the current $editing model is not equal to the
-        // $project model passed in then override it, otherwise
-        // leave it alone. isNot() helper compares two models
-        if ($this->editing->isNot($project)) $this->editing = $project;
-
-        $this->showModal = true;
-    }
-
-    public function save(): void
-    {
-        $this->validate();
-        $this->editing->forceFill([])->save();
-        $this->mainImage ? $this->handleUpload($this->mainImage) : null;
-        $this->showModal = false;
-
-        $this->dispatchBrowserEvent('notify', 'Profile saved!');
-    }
-
-    public function delete($id): void
-    {
-        $project = Project::find($id);
-        $project->delete();
-    }
-
-    /**
      * Reset forms and close
      */
     public function cancel(): void
     {
         // this is a hacky way to reset the form!
-        $this->editing = $this->makeBlankTransaction();
+        $this->editing = $this->makeBlankModel();
         $this->showModal = false;
     }
 
@@ -101,7 +75,7 @@ class ProjectTable extends Component
      * compare the database field to the uploaded file and perform
      * necessary file actions
      */
-    public function handleUpload(UploadedFile $file)
+    public function handleMainImage(UploadedFile $file)
     {
         $dbField = $this->editing->image_name;
 
@@ -113,23 +87,6 @@ class ProjectTable extends Component
 
             $previous ? Storage::disk('projects')->delete($previous) : null;
         });
-    }
-
-    /**
-     * Create instance of the model to avoid errors and set
-     * default values, but do not persist to the database.
-     */
-    public function makeBlankTransaction()
-    {
-        return Project::make([]);
-    }
-
-    /**
-     *  Return to first page after search updated
-     */
-    public function updatingSearch(): void
-    {
-        $this->gotoPage(1);
     }
 
     public function render()

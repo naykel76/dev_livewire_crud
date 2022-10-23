@@ -1,6 +1,7 @@
 <div>
 
     <x-gt-modal wire:model="showModal" maxWidth="xl">
+
         <div class="flex space-between va-c">
             <div class="bx-title">Edit/Add Project</div>
             <x-gotime-icon wire:click="$toggle('showModal')" icon="close" class="close sm" />
@@ -11,17 +12,25 @@
             <div class="grid cols-75:25">
 
                 <div class="bdr-r pr">
+
                     <div class="bx light">
+
                         <div class="flex gg">
                             <x-gt-input wire:model.defer="editing.id" for="editing.id" label="ID" rowClass="w-5" disabled />
                             <x-gt-input wire:model.defer="editing.title" for="editing.title" label="Title" rowClass="fg1" />
                         </div>
-                        <x-gt-trix wire:model.lazy="editing.description" for="editing.description" label="Description" />
+
+                        <x-gt-trix wire:model.lazy="editing.description" for="editing.description" label="Description" inline />
+                        <x-gt-input wire:model.defer="editing.project_value" for="editing.project_value" label="Project Value" inline />
+                        <x-gt-input wire:model.defer="editing.published_at" for="editing.published_at" label="Published" inline />
+
                     </div>
+
                 </div>
 
                 <div>
-                    <x-gt-select wire:model.defer="editing.status" for="editing.status" label="Status" placeholder="Please Select...">
+
+                    <x-gt-select wire:model.defer="editing.status" for="editing.status" label="Status">
                         @foreach(\App\Models\Project::STATUS as $key => $value)
                             <option value="{{ $key }}">{{ $value }}</option>
                         @endforeach
@@ -40,12 +49,16 @@
                     <div class="tac">
                         <x-gt-control.file wire:model="mainImage" for="mainImage" buttonText="Select Image" />
                     </div>
+
                 </div>
 
             </div>
+
         </form>
+
         <button wire:click="save()" class="btn primary">Save</button>
         <button wire:click="cancel()" class="btn">Cancel</button>
+
     </x-gt-modal>
 
     <div class="tar mb">
@@ -60,11 +73,11 @@
     <table class="fullwidth">
 
         <thead>
-
-            <x-gt-table.th sortable wire:click="sortField('title')" :direction="$sortField === 'title' ? $sortDirection : null">Title</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('title')" :direction="$sortField === 'title' ? $sortDirection : null" class="fullwidth">Title</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('project_value')" :direction="$sortField === 'project_value' ? $sortDirection : null">Value</x-gt-table.th>
+            <x-gt-table.th sortable wire:click="sortField('published_at')" :direction="$sortField === 'published_at' ? $sortDirection : null">Date</x-gt-table.th>
             <x-gt-table.th sortable wire:click="sortField('status')" :direction="$sortField === 'status' ? $sortDirection : null">Status</x-gt-table.th>
             <x-gt-table.th sortable wire:click="sortField('sort_order')" :direction="$sortField === 'sort_order' ? $sortDirection : null">Order</x-gt-table.th>
-            <x-gt-table.th>Image</x-gt-table.th>
             <x-gt-table.th></x-gt-table.th>
 
         </thead>
@@ -74,9 +87,11 @@
 
                 <tr wire:loading.class.delay="txt-muted">
                     <td>{{ $project->title }}</td>
+                    <td>{{ $project->project_value }}</td>
+                    <td>{{ $project->published_at }}</td>
+
                     <td>{{ $project->status }}</td>
-                    <td>{{ $project->sort_order }}</td>
-                    <td>{{ $project->image_name }}</td>
+                    <td class="tac">{{ $project->sort_order }}</td>
                     <td class="tar txt-sm">
                         <a wire:click="edit({{ $project->id }})">edit</a>
                         <a wire:click="delete({{ $project->id }})" onclick="confirm('Are you sure?')" class="txt-red ml-05">delete</a>
@@ -98,3 +113,14 @@
     {{ $projects->links('gotime::pagination.livewire') }}
 
 </div>
+
+@push('styles')
+
+    <style>
+        td {
+            white-space: nowrap;
+        }
+
+    </style>
+
+@endpush

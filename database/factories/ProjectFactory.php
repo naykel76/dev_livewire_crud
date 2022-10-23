@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,9 +18,11 @@ class ProjectFactory extends Factory
         return [
             'title' => $this->faker->text(random_int(25, 80)),
             'description' => $this->faker->sentence(random_int(15, 50)),
-            'status' => $this->faker->randomElement(['published', 'draft', 'un-published']),
+            'status' => $this->faker->randomElement(['published', 'draft']),
             'image_name' => $this->faker->randomElement($this->images),
             'sort_order' => random_int(0, 5),
+            'created_at' => Carbon::today()->subDays(rand(-365, 365)),
+            'published_at' => Carbon::today()->subDays(rand(-365, 365)),
         ];
     }
 }
