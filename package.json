@@ -6,8 +6,14 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@erbelion/vite-plugin-laravel-purgecss": "github:naykel76/vite-plugin-laravel-purgecss",
+        "@fullhuman/postcss-purgecss": "^5.0.0",
+        "autoprefixer": "^10.4.7",
         "axios": "^1.6.1",
         "laravel-vite-plugin": "^0.8.0",
+        "nk_jtb": "file:~/sites/nk_jtb",
+        "postcss": "^8.4.14",
+        "sass": "1.60.0",
         "vite": "^4.0.0"
     }
 }
