@@ -2,4 +2,6 @@
 
     <h1>{{ $pageTitle ?? null }}</h1>
 
+    <livewire:users-table />
+
 </x-gotime-app-layout>
