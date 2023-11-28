@@ -1,8 +1,9 @@
-<div class="flex va-t gap-5">
+<div>
     <div class="fg1">
         <div class="flex space-between va-c">
             <h1>Users Table</h1>
-            <x-gt-button wire:click.prevent="add" text="New user" class="primary xs" />
+            <x-gt-button text="New user" class="primary xs"
+                wire:click.prevent="$dispatchTo('user-create-edit', 'add')" />
         </div>
         <div class="overflow-x-auto rounded-lg bdr">
             <table>
@@ -18,8 +19,9 @@
                             <td>{{ $user->id }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td class="space-x">
-                                <x-gt-button wire:click.prevent="edit({{ $user->id }})" text="edit" class="link" />
+                            <td class="space-x-05 whitespace-nowrap">
+                                <x-gt-button text="edit" class="link"
+                                    wire:click.prevent="dispatchTo('user-create-edit', 'edit', {id: {{ $user->id }}})" />
                                 <x-gt-button wire:confirm="Are you sure you want to delete this user?"
                                     wire:click.prevent="delete({{ $user->id }})" text="delete" class="link txt-red" />
                             </td>
@@ -33,18 +35,14 @@
             </table>
         </div>
     </div>
-
-    <div class="w-24">
-        <form wire:submit="save">
-            <div class="bx">
-                <x-gt-input wire:model.blur="form.name" for="form.name" label="name" />
-                <x-gt-input wire:model.blur="form.email" for="form.email" label="email" />
-                <div class="flex va-c">
-                    <x-gt-submit class="primary" />
-                    <div wire:loading wire:target="save" class="spinner ml"></div>
-                </div>
-            </div>
-        </form>
-    </div>
-
+    <!-- Modal -->
+    <livewire:user-create-edit @notify="$refresh" />
 </div>
+
+
+
+
+
+
+
+
