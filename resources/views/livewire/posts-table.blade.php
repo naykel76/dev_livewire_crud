@@ -2,7 +2,7 @@
     <div class="flex space-between va-c">
         <h1>Posts Table</h1>
         <x-gt-button text="New post" class="primary xs"
-            wire:click.prevent="$dispatchTo('post-create-edit', 'add')" />
+            wire:click.prevent="$dispatchTo('post-create-edit', 'create')" />
     </div>
     <div class="overflow-x-auto rounded-lg bdr">
         <table>

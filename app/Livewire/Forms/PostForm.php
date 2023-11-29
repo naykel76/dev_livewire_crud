@@ -16,7 +16,7 @@ class PostForm extends Form
     #[Validate('required')]
     public string $description;
 
-    public function setPost(Post $post)
+    public function setModel(Post $post)
     {
         $this->post = $post;
         $this->title = $post->title;

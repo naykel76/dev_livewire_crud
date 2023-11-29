@@ -23,7 +23,7 @@ class UserForm extends Form
         ];
     }
 
-    public function setUser(User $user)
+    public function setModel(User $user)
     {
         $this->user = $user;
         $this->name = $user->name;
