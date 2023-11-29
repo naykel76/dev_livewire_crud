@@ -8,7 +8,6 @@ use Livewire\Form;
 
 class UserForm extends Form
 {
-
     public User $user;
 
     public string $name;
@@ -23,6 +22,13 @@ class UserForm extends Form
         ];
     }
 
+    /**
+     * Set the current User model instance for the form and initialize the
+     * values from the model instance.
+     *
+     * @param User $user The User model instance to be set
+     * @return void
+     */
     public function setModel(User $user)
     {
         $this->user = $user;
@@ -30,21 +36,13 @@ class UserForm extends Form
         $this->email = $user->email;
     }
 
-    public function save()
+    /**
+     * Retrieves the current User model instance from the form object
+     *
+     * @return User The current User model instance
+     */
+    public function getModel(): User
     {
-        $validated = $this->validate();
-        // if there is a user id, update the user, otherwise create a new one
-        $this->user->exists ? $this->update($validated) : $this->create($validated);
-
-    }
-
-    public function create($validated)
-    {
-        User::create($validated);
-    }
-
-    public function update($validated)
-    {
-        $this->user->update($validated);
+        return $this->user;
     }
 }

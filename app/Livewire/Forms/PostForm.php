@@ -8,7 +8,6 @@ use Livewire\Form;
 
 class PostForm extends Form
 {
-
     public Post $post;
 
     #[Validate('required|max:100')]
@@ -16,6 +15,13 @@ class PostForm extends Form
     #[Validate('required')]
     public string $description;
 
+    /**
+     * Set the current Post model instance for the form and initialize the
+     * values from the model instance.
+     *
+     * @param Post $post The Post model instance to be set
+     * @return void
+     */
     public function setModel(Post $post)
     {
         $this->post = $post;
@@ -23,20 +29,13 @@ class PostForm extends Form
         $this->description = $post->description;
     }
 
-    public function save()
+    /**
+     * Retrieves the current Post model instance from the form object
+     *
+     * @return Post The current Post model instance
+     */
+    public function getModel(): Post
     {
-        $validated = $this->validate();
-        // if there is a post id, update the post, otherwise create a new one
-        $this->post->exists ? $this->update($validated) : $this->create($validated);
-    }
-
-    public function create($validated)
-    {
-        Post::create($validated);
-    }
-
-    public function update($validated)
-    {
-        $this->post->update($validated);
+        return $this->post;
     }
 }
