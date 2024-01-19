@@ -3,7 +3,7 @@
         <div class="flex space-between va-c">
             <h1>Users Table</h1>
             <x-gt-button text="New user" class="primary xs"
-                wire:click.prevent="$dispatchTo('user-create-edit', 'add')" />
+                wire:click.prevent="$dispatchTo('user-create-edit', 'create')" />
         </div>
         <div class="overflow-x-auto rounded-lg bdr">
             <table>
@@ -38,11 +38,3 @@
     <!-- Modal -->
     <livewire:user-create-edit @notify="$refresh" />
 </div>
-
-
-
-
-
-
-
-
